@@ -26,34 +26,44 @@ public class Zadanie_1 extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession();
-				
-		if (session.getAttribute("state") != null)
-		{
-			response.sendRedirect("AlreadyRegistered.jsp");
-		}
-		else
-		{
-		String state = "registered";
-		session.setAttribute("state", state);
-				
-		String name = request.getParameter("name");
-		String surname = request.getParameter("surname");
-		String email = request.getParameter("email");	
-		String company = request.getParameter("company");
-		String origin = request.getParameter("origin");
-		String position = request.getParameter("postion");
-		
-		Participant participant = new Participant(name, surname, email, company, origin, position);
-		
 		ServletContext context = request.getServletContext();
 		Integer counter = (Integer)context.getAttribute("counter");
 		counter = counter != null ? counter : 0;
-						
-		counter++;
-		context.setAttribute("counter", counter);
 		
-		response.sendRedirect("Registered.jsp");
+		int maxParticipants = 5;
+		
+		if (counter == maxParticipants)
+		{
+			response.sendRedirect("LimitReached.jsp");
+		}
+		else
+		{
+		
+			HttpSession session = request.getSession();
+					
+			if (session.getAttribute("state") != null)
+			{
+				response.sendRedirect("AlreadyRegistered.jsp");
+			}
+			else
+			{
+				String state = "registered";
+				session.setAttribute("state", state);
+						
+				String name = request.getParameter("name");
+				String surname = request.getParameter("surname");
+				String email = request.getParameter("email");	
+				String company = request.getParameter("company");
+				String origin = request.getParameter("origin");
+				String position = request.getParameter("postion");
+				
+				Participant participant = new Participant(name, surname, email, company, origin, position);
+								
+				counter++;
+				context.setAttribute("counter", counter);
+				
+				response.sendRedirect("Registered.jsp");
+			}
 		}
 	}
 
