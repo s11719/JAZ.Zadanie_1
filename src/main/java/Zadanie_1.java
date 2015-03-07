@@ -2,12 +2,14 @@
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 
 @WebServlet("/Zadanie_1")
 public class Zadanie_1 extends HttpServlet {
@@ -23,21 +25,36 @@ public class Zadanie_1 extends HttpServlet {
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		HttpSession session = request.getSession();
-		
-		if (session.getAttribute("state") != null){
-			response.sendRedirect("Registered.jsp");
+				
+		if (session.getAttribute("state") != null)
+		{
+			response.sendRedirect("AlreadyRegistered.jsp");
 		}
-		
+		else
+		{
 		String state = "registered";
 		session.setAttribute("state", state);
-		
+				
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
+		String email = request.getParameter("email");	
+		String company = request.getParameter("company");
+		String origin = request.getParameter("origin");
+		String position = request.getParameter("postion");
 		
-		response.getWriter().println("Hello " + name + " " + surname + "!");
-	
+		Participant participant = new Participant(name, surname, email, company, origin, position);
+		
+		ServletContext context = request.getServletContext();
+		Integer counter = (Integer)context.getAttribute("counter");
+		counter = counter != null ? counter : 0;
+						
+		counter++;
+		context.setAttribute("counter", counter);
+		
+		response.sendRedirect("Registered.jsp");
+		}
 	}
 
 }

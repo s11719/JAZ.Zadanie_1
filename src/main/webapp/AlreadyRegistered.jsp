@@ -18,7 +18,7 @@
 		<tr>
 		<td>
 
-<div><h1>You have been registered. See you at conference!</h1></div>
+<div><h1>You are already registered.</h1></div>
 <p><a href='Zadanie_1.jsp'>Back</a></p>
 
 		</td>
